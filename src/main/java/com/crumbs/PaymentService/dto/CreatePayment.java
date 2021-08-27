@@ -18,6 +18,5 @@ import java.util.List;
 @Builder
 public class CreatePayment {
     @NotNull
-    //@SerializedName("cartTotal")
     private Float cartTotal;
 }
