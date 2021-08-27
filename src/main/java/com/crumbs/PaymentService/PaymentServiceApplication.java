@@ -6,13 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PaymentServiceApplication {
 
-	static class CreatePaymentResponse {
-		private String clientSecret;
-		public CreatePaymentResponse(String clientSecret) {
-			this.clientSecret = clientSecret;
-		}
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(PaymentServiceApplication.class, args);
 	}

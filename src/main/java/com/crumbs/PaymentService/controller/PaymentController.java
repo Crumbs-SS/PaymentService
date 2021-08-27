@@ -2,8 +2,15 @@ package com.crumbs.PaymentService.controller;
 
 import com.crumbs.PaymentService.dto.CreatePayment;
 import com.crumbs.PaymentService.dto.CreatePaymentResponse;
-import com.crumbs.PaymentService.dto.OrderTotal;
+import com.crumbs.PaymentService.service.StripePaymentService;
+import com.crumbs.lib.entity.Payment;
+import com.crumbs.lib.repository.OrderRepository;
+import com.crumbs.lib.repository.PaymentRepository;
 import com.stripe.exception.StripeException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,20 +24,16 @@ import com.stripe.param.PaymentIntentCreateParams;
 @RestController
 @CrossOrigin
 public class PaymentController {
-    private static Gson gson = new Gson();
 
-    @PostMapping("/create-payment-intent")
-    public String createPaymentIntent(@RequestBody Float orderTotal) throws StripeException {
-       Stripe.apiKey = "sk_test_51JNmSeBoRXU1dvNXj8tijwpwJzNjk5kiSDNGbTvadbU2fuXKYvGgPzINOF1RUmmqh15uq3HcXXhNeGTrsG1h8FmL00S1Et9dFu";
+    private final StripePaymentService paymentService;
 
-        PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
-                .setCurrency("usd")
-                .setAmount((long) (orderTotal * 100L)) //createPayment use here
-                .build();
-
-        // Create a PaymentIntent with the order amount and currency
-        PaymentIntent intent = PaymentIntent.create(createParams);
-        CreatePaymentResponse paymentResponse = new CreatePaymentResponse(intent.getClientSecret());
-        return gson.toJson(paymentResponse);
+    PaymentController(StripePaymentService paymentService) {
+        this.paymentService = paymentService;
     }
+
+    @PostMapping(value="/create-payment-intent", produces = "application/json")
+    public ResponseEntity<Object> createPaymentIntent(@Validated  @RequestBody CreatePayment createPayment) throws StripeException {
+      return new ResponseEntity<>(paymentService.createPaymentIntent(createPayment), HttpStatus.OK);
+    }
+
 }
