@@ -4,19 +4,13 @@ import com.crumbs.PaymentService.dto.CreatePayment;
 import com.crumbs.PaymentService.dto.CreatePaymentResponse;
 import com.crumbs.lib.entity.Payment;
 import com.crumbs.lib.repository.PaymentRepository;
-import com.google.gson.JsonSyntaxException;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Event;
-import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.PaymentIntent;
-import com.stripe.model.StripeObject;
-import com.stripe.net.ApiResource;
 import com.stripe.param.PaymentIntentCreateParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class StripePaymentService {
@@ -27,10 +21,13 @@ public class StripePaymentService {
     public StripePaymentService(PaymentRepository paymentRepository){
         this.paymentRepository = paymentRepository;
     }
+    @Value("${STRIPE_API_KEY}")
+    String api_key;
+
 
     public CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
 
-        Stripe.apiKey = "sk_test_51JNmSeBoRXU1dvNXj8tijwpwJzNjk5kiSDNGbTvadbU2fuXKYvGgPzINOF1RUmmqh15uq3HcXXhNeGTrsG1h8FmL00S1Et9dFu";
+        Stripe.apiKey = api_key;
 
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setCurrency("usd")
