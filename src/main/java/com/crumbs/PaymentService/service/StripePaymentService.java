@@ -21,9 +21,9 @@ public class StripePaymentService {
     public StripePaymentService(PaymentRepository paymentRepository){
         this.paymentRepository = paymentRepository;
     }
+
     @Value("${STRIPE_API_KEY}")
     String api_key;
-
 
     public CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
 
