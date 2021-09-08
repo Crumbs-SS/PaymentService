@@ -20,9 +20,9 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PreAuthorize("hasAuthority('CUSTOMER')")
-    @PostMapping(value="/create-payment-intent", produces = "application/json")
-    public ResponseEntity<Object> createPaymentIntent(@Validated @RequestBody CreatePayment createPayment) throws StripeException {
+    @PreAuthorize("hasAuthority('CUSTOMER') and #username == authentication.principal")
+    @PostMapping(value="/create-payment-intent/{username}", produces = "application/json")
+    public ResponseEntity<Object> createPaymentIntent(@PathVariable String username, @Validated @RequestBody CreatePayment createPayment) throws StripeException {
       return new ResponseEntity<>(paymentService.createPaymentIntent(createPayment), HttpStatus.OK);
     }
 
