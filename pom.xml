@@ -15,6 +15,7 @@
 	<description>Payment Micro-Service for Crumbs Food Service</description>
 	<properties>
 		<java.version>16</java.version>
+		<sonar.projectKey>payment-service</sonar.projectKey>
 	</properties>
 	<dependencies>
 		<dependency>
