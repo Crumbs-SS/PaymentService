@@ -26,7 +26,7 @@ public class PaymentControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @MockBean
     StripePaymentService stripePaymentService;
 
     @Test
