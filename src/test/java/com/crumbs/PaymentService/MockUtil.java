@@ -3,8 +3,10 @@ package com.crumbs.PaymentService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.crumbs.PaymentService.dto.CreatePayment;
+import com.crumbs.lib.entity.Payment;
 
 import java.util.Date;
+import java.util.Optional;
 
 public class MockUtil {
 
@@ -13,6 +15,10 @@ public class MockUtil {
     }
     public static CreatePayment invalidCreatePayment(){
         return CreatePayment.builder().cartTotal(null).build();
+    }
+
+    public static Payment getPayment(){
+        return Payment.builder().status("success").stripeID("stripeId").clientSecret("clientSecret").amount("1.2").build();
     }
 
     public  static String createMockJWT(String role){

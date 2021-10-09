@@ -2,11 +2,13 @@ package com.crumbs.PaymentService.controller;
 
 import com.crumbs.PaymentService.MockUtil;
 import com.crumbs.PaymentService.service.StripePaymentService;
+import com.crumbs.lib.repository.PaymentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,7 +32,7 @@ public class PaymentControllerTests {
     @Test
     public void createPaymentIntent() throws Exception{
         //verifying HTTP Request Matching + Input Serialization
-        mockMvc.perform(get("/payment-service/create-payment-intent/{username}", "correctUsername")
+        mockMvc.perform(post("/payment-service/create-payment-intent/{username}", "correctUsername")
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("CUSTOMER")))
                 .content(objectMapper.writeValueAsString(MockUtil.validCreatePayment()))
                 .contentType("application/json"))
@@ -48,9 +50,7 @@ public class PaymentControllerTests {
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("wrongRole")))
                 .content(objectMapper.writeValueAsString(MockUtil.validCreatePayment()))
                 .contentType("application/json"))
-                .andExpect(status().isInternalServerError());
-
-
+                .andExpect(status().isForbidden());
     }
 
 }
