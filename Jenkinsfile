@@ -1,15 +1,18 @@
 pipeline{
-//
-//   agent {
-//                 dockerfile true
-//    }
+
      agent any
 
   environment
   {
-          COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "paymentservice"
           AWS_ID = "728482858339"
+          DB_ENDPOINT = credentials('DB_ENDPOINT')
+          DB_USERNAME = credentials('DB_USERNAME')
+          DB_PASSWORD = credentials('DB_PASSWORD')
+          AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+          AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+          JWT_SECRET = credentials('JWT_SECRET')
+          STRIPE_API_KEY = credentials('STRIPE_API_KEY')
   }
   tools
   {
@@ -22,7 +25,7 @@ pipeline{
        stage("Build")
        {
             steps {
-                 sh 'mvn clean install -DskipTests=true'
+                 sh 'mvn clean install'
             }
        }
        
@@ -46,7 +49,7 @@ pipeline{
        stage('Await Quality Gateway') 
        {
             steps {
-                waitForQualityGate abortPipeline: true
+                waitForQualityGate abortPipeline: false
             }
        }
         
@@ -64,10 +67,10 @@ pipeline{
               withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com"
               }
-              sh "docker build --tag ${IMG_NAME}:${COMMIT_HASH} ."
-               sh "docker tag ${IMG_NAME}:${COMMIT_HASH} ${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"
+              sh "docker build -t ${IMG_NAME} ."
+               sh "docker tag ${IMG_NAME}:latest ${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/${IMG_NAME}:latest"
               echo "Docker Push..."
-               sh "docker push ${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"
+               sh "docker push ${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/${IMG_NAME}:latest"
           }
       }
     }
@@ -76,7 +79,7 @@ pipeline{
           always
           {
               sh 'mvn clean'
-              sh "docker system prune -f"
+              sh "docker rmi \$(docker images --format \'{{.Repository}}:{{.Tag}}\' | grep \'${IMG_NAME}\')"
           }
   }
 

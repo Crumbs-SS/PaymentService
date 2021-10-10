@@ -40,7 +40,7 @@ public class PaymentControllerTests {
 
         //verifying input validation
         mockMvc.perform(post("/payment-service/create-payment-intent/{username}", "correctUsername")
-                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("OWNER")))
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("CUSTOMER")))
                 .content(objectMapper.writeValueAsString(MockUtil.invalidCreatePayment()))
                 .contentType("application/json"))
                 .andExpect(status().isBadRequest());
