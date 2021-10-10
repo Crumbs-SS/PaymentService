@@ -40,9 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
         config.setAllowedOrigins(List.of(
                 "http://crumbs-bucket1.s3-website-us-east-1.amazonaws.com",
-                "http://localhost:3000"
+                "http://localhost:3000",
+                "http://localhost:4200"
         ));
-        // TODO: Add Admin Route
         config.addAllowedMethod(HttpMethod.PUT);
         config.addAllowedMethod(HttpMethod.DELETE);
         source.registerCorsConfiguration("/**", config);
