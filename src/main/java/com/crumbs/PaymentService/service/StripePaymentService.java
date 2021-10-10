@@ -11,16 +11,17 @@ import com.stripe.param.PaymentIntentCreateParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Properties;
+
 @Service
 @RequiredArgsConstructor
 public class StripePaymentService {
+    
+    private static PaymentRepository paymentRepository;
 
-    private final PaymentRepository paymentRepository;
-    private final static String API_KEY = System.getenv("STRIPE_API_KEY");
+    public static CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
 
-    public CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
-
-        Stripe.apiKey = API_KEY;
+        Stripe.apiKey = System.getenv("STRIPE_API_KEY");
 
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setCurrency("usd")
