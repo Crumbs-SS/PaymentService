@@ -9,6 +9,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
@@ -16,7 +17,8 @@ import java.util.Properties;
 @Service
 @RequiredArgsConstructor
 public class StripePaymentService {
-    
+
+    @Autowired
     private static PaymentRepository paymentRepository;
 
     public static CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
