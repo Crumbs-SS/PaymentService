@@ -18,12 +18,9 @@ public class StripePaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    @Value("${STRIPE_API_KEY}")
-    String api_key;
-
     public CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
 
-        Stripe.apiKey = api_key;
+        Stripe.apiKey = System.getenv("STRIPE_API_KEY");
 
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setCurrency("usd")

@@ -20,12 +20,10 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Value("${jwt.secret}")
-    private String jwtSecret;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
+        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), System.getenv("JWT_SECRET")))
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
@@ -39,7 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
         config.setAllowedOrigins(List.of(
-                "http://crumbs-bucket1.s3-website-us-east-1.amazonaws.com",
+                "http://crumbs-client.s3-website-us-east-1.amazonaws.com",
+                "http://crumbs-admin-bucket-01.s3-website-us-east-1.amazonaws.com",
                 "http://localhost:3000"
         ));
         // TODO: Add Admin Route
