@@ -9,10 +9,12 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StripePaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -20,6 +22,7 @@ public class StripePaymentService {
     public CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
 
         Stripe.apiKey = System.getenv("STRIPE_API_KEY");
+        log.info("STRIPE_API_KEY: {}", System.getenv("STRIPE_API_KEY"));
 
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setCurrency("usd")
@@ -27,11 +30,11 @@ public class StripePaymentService {
                 .build();
         PaymentIntent intent = PaymentIntent.create(createParams);
 
-        Payment payment = new Payment().builder()
-                .stripeID(intent.getId().toString())
+        Payment payment = Payment.builder()
+                .stripeID(intent.getId())
                 .amount(intent.getAmount().toString())
-                .clientSecret(intent.getClientSecret().toString().split("secret_")[1])
-                .status(intent.getStatus().toString())
+                .clientSecret(intent.getClientSecret().split("secret_")[1])
+                .status(intent.getStatus())
                 .build();
 
         paymentRepository.save(payment);
