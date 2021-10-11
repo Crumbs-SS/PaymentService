@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class StripePaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -22,8 +21,6 @@ public class StripePaymentService {
     public CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
 
         Stripe.apiKey = System.getenv("STRIPE_API_KEY");
-        log.info("STRIPE_API_KEY: {}", System.getenv("STRIPE_API_KEY"));
-
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setCurrency("usd")
                 .setAmount((long) ( createPayment.getCartTotal() * 100L))
