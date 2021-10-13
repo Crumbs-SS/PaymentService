@@ -10,8 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin
 @PreAuthorize("isAuthenticated()")
+@RequestMapping("/payment-service")
 public class PaymentController {
 
     private final StripePaymentService paymentService;
