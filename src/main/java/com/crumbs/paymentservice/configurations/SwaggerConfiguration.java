@@ -1,4 +1,4 @@
-package com.crumbs.PaymentService.configurations;
+package com.crumbs.paymentservice.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

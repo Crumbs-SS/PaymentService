@@ -1,4 +1,4 @@
-package com.crumbs.PaymentService.security;
+package com.crumbs.paymentservice.security;
 
 import com.crumbs.AuthLib.security.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;

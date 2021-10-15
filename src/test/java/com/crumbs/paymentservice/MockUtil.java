@@ -1,12 +1,11 @@
-package com.crumbs.PaymentService;
+package com.crumbs.paymentservice;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.crumbs.PaymentService.dto.CreatePayment;
+import com.crumbs.paymentservice.dto.CreatePayment;
 import com.crumbs.lib.entity.Payment;
 
 import java.util.Date;
-import java.util.Optional;
 
 public class MockUtil {
 

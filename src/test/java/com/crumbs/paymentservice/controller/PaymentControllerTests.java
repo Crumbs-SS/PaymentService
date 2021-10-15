@@ -1,8 +1,7 @@
-package com.crumbs.PaymentService.controller;
+package com.crumbs.paymentservice.controller;
 
-import com.crumbs.PaymentService.MockUtil;
-import com.crumbs.PaymentService.service.StripePaymentService;
-import com.crumbs.lib.repository.PaymentRepository;
+import com.crumbs.paymentservice.MockUtil;
+import com.crumbs.paymentservice.service.StripePaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;

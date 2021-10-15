@@ -1,7 +1,7 @@
-package com.crumbs.PaymentService.controller;
+package com.crumbs.paymentservice.controller;
 
-import com.crumbs.PaymentService.dto.CreatePayment;
-import com.crumbs.PaymentService.service.StripePaymentService;
+import com.crumbs.paymentservice.dto.CreatePayment;
+import com.crumbs.paymentservice.service.StripePaymentService;
 import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

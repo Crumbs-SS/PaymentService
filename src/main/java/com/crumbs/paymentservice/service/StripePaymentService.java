@@ -1,7 +1,7 @@
-package com.crumbs.PaymentService.service;
+package com.crumbs.paymentservice.service;
 
-import com.crumbs.PaymentService.dto.CreatePayment;
-import com.crumbs.PaymentService.dto.CreatePaymentResponse;
+import com.crumbs.paymentservice.dto.CreatePayment;
+import com.crumbs.paymentservice.dto.CreatePaymentResponse;
 import com.crumbs.lib.entity.Payment;
 import com.crumbs.lib.repository.PaymentRepository;
 import com.stripe.Stripe;
@@ -9,7 +9,6 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
