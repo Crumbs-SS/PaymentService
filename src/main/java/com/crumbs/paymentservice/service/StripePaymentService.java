@@ -4,13 +4,12 @@ import com.crumbs.paymentservice.dto.CreatePayment;
 import com.crumbs.paymentservice.dto.CreatePaymentResponse;
 import com.crumbs.lib.entity.Payment;
 import com.crumbs.lib.repository.PaymentRepository;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import static com.stripe.Stripe.apiKey;
 @Service
 @RequiredArgsConstructor
 public class StripePaymentService {
@@ -19,7 +18,7 @@ public class StripePaymentService {
 
     public CreatePaymentResponse createPaymentIntent(CreatePayment createPayment) throws StripeException {
 
-        Stripe.apiKey = System.getenv("STRIPE_API_KEY");
+        apiKey = System.getenv("STRIPE_API_KEY");
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setCurrency("usd")
                 .setAmount((long) ( createPayment.getCartTotal() * 100L))
